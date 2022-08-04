@@ -292,10 +292,11 @@ class _OrderScreenState extends State<OrderDetailScreen> {
                                   children: [
                                     Container(
                                       width: 130,
-                                      decoration: const BoxDecoration(
+                                      decoration: BoxDecoration(
                                         color: Colors.grey,
-                                        image: const DecorationImage(
-                                          image: AssetImage("assets/mocha.jpg"),
+                                        image: DecorationImage(
+                                          image: NetworkImage(
+                                              sections[i]['image']),
                                           fit: BoxFit.cover,
                                         ),
                                       ),
