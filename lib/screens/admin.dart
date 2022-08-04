@@ -1,8 +1,11 @@
 // ignore_for_file: deprecated_member_use, duplicate_ignore
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:demo_project_admin/screens/add_packages.dart';
 import 'package:demo_project_admin/screens/add_product.dart';
 import 'package:demo_project_admin/screens/orders.dart';
+import 'package:demo_project_admin/screens/package_list.dart';
+import 'package:demo_project_admin/screens/product_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -108,6 +111,7 @@ class _AdminState extends State<Admin> {
                 await _auth.signOut();
               },
               child: ListTile(
+                onTap: (() => _auth.signOut()),
                 title: const Text("Log out"),
                 leading: Icon(
                   Icons.logout,
@@ -125,8 +129,19 @@ class _AdminState extends State<Admin> {
     return ListView(
       children: <Widget>[
         ListTile(
+          leading: const Icon(Icons.shopping_basket_outlined),
+          title: const Text("Add new product packages"),
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const UploadPackages()));
+          },
+        ),
+        const Divider(),
+        ListTile(
           leading: const Icon(Icons.add),
-          title: const Text("Add new product"),
+          title: const Text("Add new single product"),
           onTap: () {
             Navigator.push(
                 context,
@@ -139,10 +154,17 @@ class _AdminState extends State<Admin> {
           leading: const Icon(Icons.change_history),
           title: const Text("Products list"),
           onTap: () {
-            // Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //         builder: (context) => const UploadProducts()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const ProductList()));
+          },
+        ),
+        const Divider(),
+        ListTile(
+          leading: const Icon(Icons.list),
+          title: const Text("Package list"),
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const PackageList()));
           },
         ),
         const Divider(),
