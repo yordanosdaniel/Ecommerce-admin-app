@@ -44,7 +44,7 @@ class _AdminState extends State<Admin> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Admin Page"),
+        title: const Text("Admin"),
         centerTitle: true,
         elevation: 0.0,
         actions: [
