@@ -11,6 +11,9 @@ class ProductList extends StatefulWidget {
 
 class _ProductState extends State<ProductList> {
   get width => null;
+  void deleteProduct(String id) async {
+    await FirebaseFirestore.instance.collection("products").doc(id).delete();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +73,7 @@ class _ProductState extends State<ProductList> {
                     child: Column(
                       children: [
                         Container(
-                          height: 350,
+                          height: 400,
                           child: Stack(children: [
                             Positioned(
                                 top: 35,
@@ -94,7 +97,7 @@ class _ProductState extends State<ProductList> {
                                   ),
                                 )),
                             Positioned(
-                                top: 80,
+                                top: 100,
                                 left: 30,
                                 child: Card(
                                     elevation: 10,
@@ -102,24 +105,52 @@ class _ProductState extends State<ProductList> {
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(15),
                                     ),
-                                    child: Container(
-                                      height: 250,
-                                      width: 160,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        image: DecorationImage(
-                                          fit: BoxFit.fill,
-                                          image: NetworkImage(snapshot
-                                              .data!.docs[index]['image']),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                            child: Row(
+                                          children: [
+                                            IconButton(
+                                              icon: const Icon(
+                                                Icons.delete,
+                                                color: Colors.red,
+                                              ),
+                                              onPressed: () {
+                                                deleteProduct(snapshot
+                                                    .data!.docs[index]['id']);
+                                              },
+                                            ),
+                                            const Text(
+                                              "DELETE",
+                                              style: TextStyle(
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.red,
+                                              ),
+                                            ),
+                                          ],
+                                        )),
+                                        Container(
+                                          height: 250,
+                                          width: 160,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            image: DecorationImage(
+                                              fit: BoxFit.fill,
+                                              image: NetworkImage(snapshot
+                                                  .data!.docs[index]['image']),
+                                            ),
+                                          ),
                                         ),
-                                      ),
+                                      ],
                                     ))),
                             Positioned(
                                 top: 60,
                                 right: 15,
                                 left: 200,
                                 child: Container(
-                                  height: 350,
+                                  height: 400,
                                   width: 180,
                                   child: Column(
                                       crossAxisAlignment:

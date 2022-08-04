@@ -13,6 +13,10 @@ class PackageList extends StatefulWidget {
 class _ProductState extends State<PackageList> {
   get width => null;
 
+  void deleteProduct(String id) async {
+    await FirebaseFirestore.instance.collection("products").doc(id).delete();
+  }
+
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
@@ -92,13 +96,32 @@ class _ProductState extends State<PackageList> {
                             Positioned(
                                 top: 80,
                                 left: 30,
-                                child: Card(
-                                    elevation: 10,
-                                    shadowColor: Colors.grey.withOpacity(0.5),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    child: Container(
+                                child: Column(
+                                  children: [
+                                    Container(
+                                        child: Row(
+                                      children: [
+                                        IconButton(
+                                          icon: const Icon(
+                                            Icons.delete,
+                                            color: Colors.red,
+                                          ),
+                                          onPressed: () {
+                                            deleteProduct(snapshot
+                                                .data!.docs[index]['id']);
+                                          },
+                                        ),
+                                        const Text(
+                                          "DELETE",
+                                          style: TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.red,
+                                          ),
+                                        ),
+                                      ],
+                                    )),
+                                    Container(
                                       height: 250,
                                       width: 160,
                                       decoration: BoxDecoration(
@@ -109,7 +132,9 @@ class _ProductState extends State<PackageList> {
                                               .data!.docs[index]['image']),
                                         ),
                                       ),
-                                    ))),
+                                    ),
+                                  ],
+                                )),
                             Positioned(
                                 top: 60,
                                 right: 15,

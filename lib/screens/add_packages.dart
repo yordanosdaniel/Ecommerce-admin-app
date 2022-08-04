@@ -1,4 +1,4 @@
-// ignore_for_file: unused_field
+// ignore_for_file: unused_field, use_build_context_synchronously
 
 import 'dart:io';
 
@@ -13,17 +13,17 @@ import 'package:image_picker/image_picker.dart';
 import 'package:toast/toast.dart';
 import 'package:uuid/uuid.dart';
 
-class UploadProducts extends StatefulWidget {
-  const UploadProducts({Key? key}) : super(key: key);
+class UploadPackages extends StatefulWidget {
+  const UploadPackages({Key? key}) : super(key: key);
 
   @override
-  State<UploadProducts> createState() => _UploadProductsState();
+  State<UploadPackages> createState() => _UploadProductsState();
 }
 
-class _UploadProductsState extends State<UploadProducts> {
-  var _productTitle = "";
-  var _productDescription = "";
-  var _productPrice = "";
+class _UploadProductsState extends State<UploadPackages> {
+  var _packageTitle = "";
+  var _packageDescription = "";
+  var _packagePrice = "";
 
   final _formKey = GlobalKey<FormState>();
   String _url = '';
@@ -51,19 +51,19 @@ class _UploadProductsState extends State<UploadProducts> {
         final ref = FirebaseStorage.instance
             .ref()
             .child('product')
-            .child(_productTitle + '.jpg');
+            .child(_packageTitle + '.jpg');
         await ref.putFile(_image!);
         _url = await ref.getDownloadURL();
 
-        final productId = uuid.v4();
+        final packageId = uuid.v4();
         // final User? user = _auth.currentUser;
         // final _uid = user!.uid;
-        FirebaseFirestore.instance.collection('products').doc(productId).set({
-          'title': _productTitle,
-          'description': _productDescription,
-          'price': _productPrice,
+        FirebaseFirestore.instance.collection('packages').doc(packageId).set({
+          'title': _packageTitle,
+          'description': _packageDescription,
+          'price': _packagePrice,
           'image': _url,
-          'id': productId,
+          'id': packageId,
           'createdAt': Timestamp.now()
         });
 
@@ -105,7 +105,7 @@ class _UploadProductsState extends State<UploadProducts> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add New Products"),
+        title: const Text("Add New Packages"),
         elevation: 0,
       ),
       bottomSheet: SizedBox(
@@ -122,7 +122,7 @@ class _UploadProductsState extends State<UploadProducts> {
                     color: Colors.white,
                   ))
                 : const Text(
-                    'Add Product',
+                    'Add Package',
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -206,7 +206,7 @@ class _UploadProductsState extends State<UploadProducts> {
                           keyboardType: TextInputType.emailAddress,
                           decoration: const InputDecoration(labelText: 'Title'),
                           onSaved: (val) {
-                            _productTitle = val.toString();
+                            _packageTitle = val.toString();
                           },
                         ),
                       ),
@@ -228,7 +228,7 @@ class _UploadProductsState extends State<UploadProducts> {
                           decoration:
                               const InputDecoration(labelText: 'Price Birr'),
                           onSaved: (val) {
-                            _productPrice = val.toString();
+                            _packagePrice = val.toString();
                           },
                         ),
                       ),
@@ -237,40 +237,13 @@ class _UploadProductsState extends State<UploadProducts> {
                   const SizedBox(width: 10),
 
                   const SizedBox(height: 15),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //   crossAxisAlignment: CrossAxisAlignment.end,
-                  //   children: [
-                  //     Expanded(
-                  //       //flex: 2,
-                  //       child: Padding(
-                  //         padding: const EdgeInsets.only(right: 9),
-                  //         child: TextFormField(
-                  //           keyboardType: TextInputType.number,
-                  //           key: const ValueKey('Quantity'),
-                  //           validator: (value) {
-                  //             if (value!.isEmpty) {
-                  //               return 'Quantity is missed';
-                  //             }
-                  //             return null;
-                  //           },
-                  //           decoration: const InputDecoration(
-                  //             labelText: 'Quantity',
-                  //           ),
-                  //           onSaved: (value) {
-                  //             _productQuantity = value.toString();
-                  //           },
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
+
                   const SizedBox(height: 15),
                   TextFormField(
                       key: const ValueKey('Description'),
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return 'product description is required';
+                          return 'package description is required';
                         }
                         return null;
                       },
@@ -280,11 +253,11 @@ class _UploadProductsState extends State<UploadProducts> {
                       decoration: const InputDecoration(
                         //  counterText: charLength.toString(),
                         labelText: 'Description',
-                        hintText: 'Product description',
+                        hintText: 'Package description',
                         border: OutlineInputBorder(),
                       ),
                       onSaved: (value) {
-                        _productDescription = value.toString();
+                        _packageDescription = value.toString();
                       },
                       onChanged: (text) {
                         // setState(() => charLength -= text.length);

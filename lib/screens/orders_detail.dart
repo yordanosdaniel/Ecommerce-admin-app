@@ -64,387 +64,333 @@ class _OrderScreenState extends State<OrderDetailScreen> {
             appBar: AppBar(
               title: const Text('Orders Detail'),
             ),
-            bottomSheet: Container(
-              color: Colors.purple[100],
-              height: 270,
-              width: double.infinity,
-              child: StreamBuilder<DocumentSnapshot>(
-                stream: courseDocStream,
-                builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.active) {
-                    // get course document
-                    var courseDocument = snapshot.data!;
+            body: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                StreamBuilder<DocumentSnapshot>(
+                    stream: courseDocStream,
+                    // future: orderProvider.getData(),
+                    builder:
+                        (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.active) {
+                        // get course document
+                        var courseDocument = snapshot.data!;
 
-                    // get sections from the document
-                    var sections = courseDocument['delivery information'];
-                    var customerInfo = courseDocument['customer information'];
+                        // get sections from the document
+                        var sections = courseDocument['ordered products'];
 
-                    return SingleChildScrollView(
-                      child: Container(
-                        margin: const EdgeInsets.only(bottom: 0),
-                        child: Column(
-                          children: [
-                            const Text(
-                              "Delivery Informartion",
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.deepPurple,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            ListTile(
-                              leading: const Icon(
-                                Icons.person,
-                                color: Colors.deepPurple,
-                              ),
-                              title: const Text(
-                                "Customer Information",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.deepPurple,
-                                  fontWeight: FontWeight.bold,
+                        return Container(
+                          height: 330,
+                          margin: const EdgeInsets.only(bottom: 60),
+                          child: ListView.builder(
+                            itemCount: sections != null ? sections.length : 0,
+                            itemBuilder: (ctx, i) {
+                              return InkWell(
+                                onTap: () {},
+                                // Navigator.of(context).pushNamed(
+                                //   ProductDetailsScreen.routeName,
+                                // arguments: widget.pId,
+
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8),
+                                  child: Container(
+                                    width: double.infinity,
+                                    height: 100,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          width: 2, color: Colors.grey),
+                                      borderRadius: const BorderRadius.only(
+                                        topRight: Radius.circular(16),
+                                        bottomRight: Radius.circular(16),
+                                      ),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 130,
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey,
+                                            image: DecorationImage(
+                                              image: NetworkImage(
+                                                  sections[i]['image']),
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Flexible(
+                                          child: Column(
+                                            children: [
+                                              const SizedBox(height: 10),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Flexible(
+                                                    child: Text(
+                                                      sections[i]['title'],
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: const TextStyle(
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              const SizedBox(height: 7),
+                                              Row(
+                                                children: [
+                                                  const Text(
+                                                    'Subtotal : ',
+                                                    style:
+                                                        TextStyle(fontSize: 16),
+                                                  ),
+                                                  Flexible(
+                                                    child: Text(
+                                                      (sections[i]['price'] *
+                                                              sections[i]
+                                                                  ['quantity'])
+                                                          .toString(),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: const TextStyle(
+                                                          fontSize: 16),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  const Text(
+                                                    'Quantity : ',
+                                                    style:
+                                                        TextStyle(fontSize: 16),
+                                                  ),
+                                                  Flexible(
+                                                    child: Text(
+                                                      sections[i]['quantity']
+                                                          .toString(),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: const TextStyle(
+                                                          fontSize: 16),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                              ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Full Name: " + customerInfo['name'],
-                                    style: const TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.deepPurple,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                  ),
-                                  Text(
-                                    "Email: " + customerInfo['email'],
-                                    style: const TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.deepPurple,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                  ),
-                                  Text(
-                                    "Phone Number: ${customerInfo['phoneNumber']}",
-                                    style: const TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.deepPurple,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            ListTile(
-                              leading: const Icon(
-                                Icons.calculate_outlined,
-                                color: Colors.deepPurple,
-                              ),
-                              title: const Text(
-                                "Price Detail",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.deepPurple,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Subtotal: " +
-                                        courseDocument['subtotal'].toString(),
-                                    style: const TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.deepPurple,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                  ),
-                                  Text(
-                                    "Delivery Fee: " +
-                                        courseDocument['deliveryFee']
-                                            .toString(),
-                                    style: const TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.deepPurple,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                  ),
-                                  Text(
-                                    "Total: " +
-                                        courseDocument['TotalPricewithDelivery']
-                                            .toString(),
-                                    style: const TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.deepPurple,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            ListTile(
-                              leading: const Icon(
-                                Icons.location_on,
-                                color: Colors.deepPurple,
-                              ),
-                              title: const Text(
-                                "Location",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.deepPurple,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "City: " + sections['city'],
-                                    style: const TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.deepPurple,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                  ),
-                                  Text(
-                                    "Subcity: " + sections['subCity'],
-                                    style: const TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.deepPurple,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                  ),
-                                  Text(
-                                    "street: " + sections['street'],
-                                    style: const TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.deepPurple,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 30,
-                            ),
-                            GestureDetector(
-                              onTap: () {},
-                              child: Container(
-                                alignment: Alignment.center,
-                                height: 45,
-                                color: Colors.purple,
-                                child: const Text(
-                                  'Confirm Shipment',
+                              );
+                            },
+                          ),
+                        );
+                      }
+                      return Container();
+                    }),
+                Container(
+                  color: Colors.purple[100],
+                  height: 270,
+                  width: double.infinity,
+                  child: StreamBuilder<DocumentSnapshot>(
+                    stream: courseDocStream,
+                    builder:
+                        (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.active) {
+                        // get course document
+                        var courseDocument = snapshot.data!;
+
+                        // get sections from the document
+                        var sections = courseDocument['delivery information'];
+                        var customerInfo =
+                            courseDocument['customer information'];
+
+                        return SingleChildScrollView(
+                          child: Container(
+                            child: Column(
+                              children: [
+                                const Text(
+                                  "Delivery Informartion",
                                   style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 25),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  }
-                  return Container();
-                },
-              ),
-            ),
-            body: StreamBuilder<DocumentSnapshot>(
-                stream: courseDocStream,
-                // future: orderProvider.getData(),
-                builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.active) {
-                    // get course document
-                    var courseDocument = snapshot.data!;
-
-                    // get sections from the document
-                    var sections = courseDocument['ordered products'];
-
-                    return Container(
-                      margin: const EdgeInsets.only(bottom: 60),
-                      child: ListView.builder(
-                        itemCount: sections != null ? sections.length : 0,
-                        itemBuilder: (ctx, i) {
-                          return InkWell(
-                            onTap: () {},
-                            // Navigator.of(context).pushNamed(
-                            //   ProductDetailsScreen.routeName,
-                            // arguments: widget.pId,
-
-                            child: Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: Container(
-                                width: double.infinity,
-                                height: 100,
-                                decoration: BoxDecoration(
-                                  border:
-                                      Border.all(width: 2, color: Colors.grey),
-                                  borderRadius: const BorderRadius.only(
-                                    topRight: Radius.circular(16),
-                                    bottomRight: Radius.circular(16),
+                                    fontSize: 20,
+                                    color: Colors.deepPurple,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 130,
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey,
-                                        image: DecorationImage(
-                                          image: NetworkImage(
-                                              sections[i]['image']),
-                                          fit: BoxFit.cover,
+                                ListTile(
+                                  leading: const Icon(
+                                    Icons.person,
+                                    color: Colors.deepPurple,
+                                  ),
+                                  title: const Text(
+                                    "Customer Information",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.deepPurple,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  subtitle: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Full Name: " + customerInfo['name'],
+                                        style: const TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.deepPurple,
+                                          fontWeight: FontWeight.normal,
                                         ),
                                       ),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Flexible(
-                                      child: Column(
-                                        children: [
-                                          const SizedBox(height: 10),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Flexible(
-                                                child: Text(
-                                                  sections[i]['title'],
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: const TextStyle(
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 7),
-                                          Row(
-                                            children: [
-                                              const Text(
-                                                'Subtotal : ',
-                                                style: TextStyle(fontSize: 16),
-                                              ),
-                                              Flexible(
-                                                child: Text(
-                                                  (sections[i]['price'] *
-                                                          sections[i]
-                                                              ['quantity'])
-                                                      .toString(),
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: const TextStyle(
-                                                      fontSize: 16),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              const Text(
-                                                'Quantity : ',
-                                                style: TextStyle(fontSize: 16),
-                                              ),
-                                              Flexible(
-                                                child: Text(
-                                                  sections[i]['quantity']
-                                                      .toString(),
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: const TextStyle(
-                                                      fontSize: 16),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          // Row(
-                                          //   children:  [
-                                          //     Text(
-                                          //       'SubTotal : ',
-                                          //       style: TextStyle(fontSize: 16),
-                                          //     ),
-                                          //     Flexible(
-                                          //       child: Text(
-                                          //         '\$',
-                                          //         overflow: TextOverflow.ellipsis,
-                                          //         style: TextStyle(fontSize: 16),
-                                          //       ),
-                                          //     ),
-                                          //   ],
-                                          // ),
-                                          // Row(
-                                          //   children: [
-                                          //     const Text(
-                                          //       'Shipping : ',
-                                          //       style: TextStyle(fontSize: 16),
-                                          //     ),
-                                          //     Flexible(
-                                          //       child: Text(
-                                          //         '\$450.00',
-                                          //         overflow: TextOverflow.ellipsis,
-                                          //         style: TextStyle(fontSize: 16),
-                                          //       ),
-                                          //     ),
-                                          //   ],
-                                          // ),
-                                          // Row(
-                                          //   mainAxisAlignment: MainAxisAlignment.end,
-                                          //   children: [
-                                          //     TextButton(
-                                          //       onPressed: OrderAttribute.quantity < 2
-                                          //           ? () {}
-                                          //           : () {
-                                          //               OrderProvider.decrementOrderProductQuantity(
-                                          //                 widget.pId,
-                                          //                 OrderAttribute.title,
-                                          //                 OrderAttribute.imageUrl,
-                                          //                 OrderAttribute.price,
-                                          //               );
-                                          //             },
-                                          //       child: const Text(
-                                          //         '-',
-                                          //         style: TextStyle(fontSize: 25),
-                                          //       ),
-                                          //     ),
-                                          //     Text(
-                                          //       OrderAttribute.quantity.toString(),
-                                          //       style: TextStyle(fontSize: 20),
-                                          //     ),
-                                          //     TextButton(
-                                          //       onPressed: () {
-                                          //         OrderProvider.addToOrder(
-                                          //           widget.pId,
-                                          //           OrderAttribute.title,
-                                          //           OrderAttribute.imageUrl,
-                                          //           OrderAttribute.price,
-                                          //         );
-                                          //       },
-                                          //       child: const Text(
-                                          //         '+',
-                                          //         style: TextStyle(fontSize: 20),
-                                          //       ),
-                                          //     ),
-                                          //   ],
-                                          // ),
-                                        ],
+                                      Text(
+                                        "Email: " + customerInfo['email'],
+                                        style: const TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.deepPurple,
+                                          fontWeight: FontWeight.normal,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                      Text(
+                                        "Phone Number: ${customerInfo['phoneNumber']}",
+                                        style: const TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.deepPurple,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
+                                ListTile(
+                                  leading: const Icon(
+                                    Icons.calculate_outlined,
+                                    color: Colors.deepPurple,
+                                  ),
+                                  title: const Text(
+                                    "Price Detail",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.deepPurple,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  subtitle: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Subtotal: " +
+                                            courseDocument['subtotal']
+                                                .toString(),
+                                        style: const TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.deepPurple,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                      Text(
+                                        "Delivery Fee: " +
+                                            courseDocument['deliveryFee']
+                                                .toString(),
+                                        style: const TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.deepPurple,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                      Text(
+                                        "Total: " +
+                                            courseDocument[
+                                                    'TotalPricewithDelivery']
+                                                .toString(),
+                                        style: const TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.deepPurple,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                ListTile(
+                                  leading: const Icon(
+                                    Icons.location_on,
+                                    color: Colors.deepPurple,
+                                  ),
+                                  title: const Text(
+                                    "Location",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.deepPurple,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  subtitle: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "City: " + sections['city'],
+                                        style: const TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.deepPurple,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                      Text(
+                                        "Subcity: " + sections['subCity'],
+                                        style: const TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.deepPurple,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                      Text(
+                                        "street: " + sections['street'],
+                                        style: const TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.deepPurple,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                // SizedBox(
+                                //   height: 30,
+                                // ),
+                                GestureDetector(
+                                  onTap: () {},
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    height: 45,
+                                    color: Colors.purple,
+                                    child: const Text(
+                                      'Confirm Shipment',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 25),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          );
-                        },
-                      ),
-                    );
-                  }
-                  return Container();
-                }),
-          );
+                          ),
+                        );
+                      }
+                      return Container();
+                    },
+                  ),
+                ),
+              ],
+            ));
   }
 }
