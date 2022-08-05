@@ -134,6 +134,15 @@ class _AdminState extends State<Admin> {
   Widget _loadScreen() {
     return ListView(
       children: <Widget>[
+        const Divider(),
+        ListTile(
+          leading: const Icon(Icons.shopping_cart_checkout_outlined),
+          title: const Text("New Orders"),
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const OrderScreen()));
+          },
+        ),
         ListTile(
           leading: const Icon(Icons.shopping_basket_outlined),
           title: const Text("Add new product packages"),
@@ -171,15 +180,6 @@ class _AdminState extends State<Admin> {
           onTap: () {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const PackageList()));
-          },
-        ),
-        const Divider(),
-        ListTile(
-          leading: const Icon(Icons.shopping_cart_checkout_outlined),
-          title: const Text("New Orders"),
-          onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const OrderScreen()));
           },
         ),
         const Divider(),

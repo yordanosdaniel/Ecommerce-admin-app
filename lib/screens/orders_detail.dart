@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_project_admin/global_method.dart';
+import 'package:demo_project_admin/screens/confirm_shipment.dart';
 import 'package:flutter/material.dart';
 
 class OrderDetailScreen extends StatefulWidget {
@@ -19,6 +20,7 @@ class _OrderScreenState extends State<OrderDetailScreen> {
   }
 
   bool _isOrder = false;
+  bool _isConfirmed = false;
   GlobalMethods globalMethods = GlobalMethods();
 
   @override
@@ -367,19 +369,43 @@ class _OrderScreenState extends State<OrderDetailScreen> {
                                 //   height: 30,
                                 // ),
                                 GestureDetector(
-                                  onTap: () {},
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    height: 45,
-                                    color: Colors.purple,
-                                    child: const Text(
-                                      'Confirm Shipment',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 25),
-                                    ),
-                                  ),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ConfirmShipment(
+                                            orderId: courseDocument['orderId']),
+                                      ),
+                                    );
+                                    setState(() {
+                                      _isConfirmed = true;
+                                    });
+                                  },
+                                  child: _isConfirmed
+                                      ? Container(
+                                          alignment: Alignment.center,
+                                          height: 45,
+                                          color: Colors.purple[200],
+                                          child: const Text(
+                                            'Confirmed',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 25),
+                                          ),
+                                        )
+                                      : Container(
+                                          alignment: Alignment.center,
+                                          height: 45,
+                                          color: Colors.purple,
+                                          child: const Text(
+                                            'Confirm Shipment',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 25),
+                                          ),
+                                        ),
                                 ),
                               ],
                             ),

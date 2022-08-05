@@ -20,10 +20,14 @@ class _OrderScreenState extends State<OrderScreen> {
   }
 
   bool _isOrder = false;
+
   GlobalMethods globalMethods = GlobalMethods();
 
   @override
   Widget build(BuildContext context) {
+    // Stream<QuerySnapshot<Map<String, dynamic>>> courseDocStream =
+    //     FirebaseFirestore.instance.collection('orders').snapshots();
+
     return _isOrder
         ? Scaffold(
             body: SingleChildScrollView(
@@ -53,7 +57,7 @@ class _OrderScreenState extends State<OrderScreen> {
           ))
         : Scaffold(
             appBar: AppBar(
-              title: const Text('Orders'),
+              title: Text('Orders '),
             ),
             body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                 // <2> Pass `Stream<QuerySnapshot>` to stream
