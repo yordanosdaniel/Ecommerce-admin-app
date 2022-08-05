@@ -12,17 +12,17 @@ class AuthStateScreen extends StatelessWidget {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.connectionState == ConnectionState.active) {
           if (snapshot.hasData) {
-            return WelcomeScreen();
+            return const WelcomeScreen();
           } else {
             return Login();
           }
         } else if (snapshot.hasError) {
-          return Text('Error Occured');
+          return const Text('Error Occured');
         }
-        return WelcomeScreen();
+        return const WelcomeScreen();
       },
     );
   }

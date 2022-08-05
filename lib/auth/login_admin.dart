@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, use_build_context_synchronously
+// ignore_for_file: prefer_const_literals_to_create_immutables, use_build_context_synchronously, unused_element
 
 import 'package:demo_project_admin/auth/signup_admin.dart';
 import 'package:demo_project_admin/global_method.dart';

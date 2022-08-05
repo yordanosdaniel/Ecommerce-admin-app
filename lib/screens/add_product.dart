@@ -80,25 +80,36 @@ class _UploadProductsState extends State<UploadProducts> {
   }
 
   Future _getGalleryImage() async {
-    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-
-    setState(() {
-      _image = File(image!.path);
-    });
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      setState(() {
+        _image = File(image!.path);
+      });
+    } catch (e) {
+      _globalMethods.showDialogues(context, "Image is needed.");
+    }
   }
 
   Future _getCameraImage() async {
-    final image = await ImagePicker().pickImage(source: ImageSource.camera);
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.camera);
 
-    setState(() {
-      _image = File(image!.path);
-    });
+      setState(() {
+        _image = File(image!.path);
+      });
+    } catch (e) {
+      _globalMethods.showDialogues(context, "Image is needed.");
+    }
   }
 
   void _removeImage() {
-    setState(() {
-      _image = null;
-    });
+    try {
+      setState(() {
+        _image = null;
+      });
+    } catch (e) {
+      _globalMethods.showDialogues(context, "No image to be deleted");
+    }
   }
 
   @override

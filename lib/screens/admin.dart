@@ -51,9 +51,15 @@ class _AdminState extends State<Admin> {
         centerTitle: true,
         elevation: 0.0,
         actions: [
-          Container(
-            margin: const EdgeInsets.only(right: 25),
-            child: const Icon(Icons.logout),
+          GestureDetector(
+            onTap: () {
+              _auth.signOut();
+              print("signed out");
+            },
+            child: Container(
+              margin: const EdgeInsets.only(right: 25),
+              child: const Icon(Icons.logout),
+            ),
           ),
         ],
       ),

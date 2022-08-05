@@ -11,8 +11,36 @@ class ProductList extends StatefulWidget {
 
 class _ProductState extends State<ProductList> {
   get width => null;
-  void deleteProduct(String id) async {
-    await FirebaseFirestore.instance.collection("products").doc(id).delete();
+
+  Future<void> showDialogues(BuildContext context, String id) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text("Confirm Delete"),
+            content: const Text(
+                "All information about this product will be deleted and cannot be undone! Do you want to continue?"),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text("No")),
+              TextButton(
+                onPressed: () async {
+                  ;
+                  await FirebaseFirestore.instance
+                      .collection("products")
+                      .doc(id)
+                      .delete();
+
+                  Navigator.pop(context);
+                },
+                child: const Text("Yes"),
+              ),
+            ],
+          );
+        });
   }
 
   @override
@@ -40,18 +68,13 @@ class _ProductState extends State<ProductList> {
             alignment: Alignment.center,
             height: 45,
             color: Colors.purple,
-            child: _isLoading
-                ? const Center(
-                    child: CircularProgressIndicator(
-                    color: Colors.white,
-                  ))
-                : const Text(
-                    'Add new product',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25),
-                  ),
+            child: const Text(
+              'Add new product',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25),
+            ),
           ),
         ),
       ),
@@ -107,29 +130,32 @@ class _ProductState extends State<ProductList> {
                                     ),
                                     child: Column(
                                       children: [
-                                        Container(
-                                            child: Row(
-                                          children: [
-                                            IconButton(
-                                              icon: const Icon(
-                                                Icons.delete,
-                                                color: Colors.red,
+                                        GestureDetector(
+                                            onTap: () {
+                                              showDialogues(
+                                                  context,
+                                                  snapshot.data!.docs[index]
+                                                      ['id']);
+                                            },
+                                            child: Container(
+                                              child: Row(
+                                                children: const [
+                                                  Icon(
+                                                    Icons.delete,
+                                                    color: Colors.red,
+                                                  ),
+                                                  Text(
+                                                    "DELETE",
+                                                    style: TextStyle(
+                                                      fontSize: 17,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.red,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                              onPressed: () {
-                                                deleteProduct(snapshot
-                                                    .data!.docs[index]['id']);
-                                              },
-                                            ),
-                                            const Text(
-                                              "DELETE",
-                                              style: TextStyle(
-                                                fontSize: 17,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.red,
-                                              ),
-                                            ),
-                                          ],
-                                        )),
+                                            )),
                                         Container(
                                           height: 250,
                                           width: 160,

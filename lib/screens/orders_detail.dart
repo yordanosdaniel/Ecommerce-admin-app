@@ -109,7 +109,7 @@ class _OrderScreenState extends State<OrderDetailScreen> {
                                         Container(
                                           width: 130,
                                           decoration: BoxDecoration(
-                                            color: Colors.grey,
+                                            color: Colors.purple[200],
                                             image: DecorationImage(
                                               image: NetworkImage(
                                                   sections[i]['image']),
