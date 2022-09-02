@@ -2,19 +2,21 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_project_admin/global_method.dart';
+import 'package:demo_project_admin/screens/confirmed_details.dart';
 import 'package:demo_project_admin/screens/orders_detail.dart';
-import 'package:demo_project_admin/screens/reported_orders.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class OrderScreen extends StatefulWidget {
-  const OrderScreen({Key? key}) : super(key: key);
+class ReportedOrders extends StatefulWidget {
+  const ReportedOrders({
+    Key? key,
+  }) : super(key: key);
 
   @override
-  State<OrderScreen> createState() => _OrderScreenState();
+  State<ReportedOrders> createState() => _OrderScreenState();
 }
 
-class _OrderScreenState extends State<OrderScreen> {
+class _OrderScreenState extends State<ReportedOrders> {
   @override
   void initState() {
     super.initState();
@@ -58,29 +60,13 @@ class _OrderScreenState extends State<OrderScreen> {
           ))
         : Scaffold(
             appBar: AppBar(
-              title: Text('Orders '),
-              actions: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ReportedOrders()));
-                  },
-                  child: Container(
-                    margin: EdgeInsets.all(10),
-                    color: Colors.deepPurple[300],
-                    padding: EdgeInsets.all(10),
-                    child: Text("Replied Orders"),
-                  ),
-                )
-              ],
+              title: Text('Replied orders '),
             ),
             body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                 // <2> Pass `Stream<QuerySnapshot>` to stream
                 stream: FirebaseFirestore.instance
-                    .collection('orders')
-                    .orderBy('orderData', descending: true)
+                    .collection('reoprted-orders')
+                    .orderBy('reportedDate', descending: true)
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
@@ -96,7 +82,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              OrderDetailScreen(
+                                              ConfirmedDetails(
                                                 orderIds: doc['orderId'],
                                               ))),
                                   title: Text(
@@ -109,9 +95,9 @@ class _OrderScreenState extends State<OrderScreen> {
                                     ),
                                   ),
                                   trailing: Text(
-                                    doc['orderData'],
+                                    "Replied: " + doc['reportedDate'],
                                     style: const TextStyle(
-                                      color: Colors.red,
+                                      color: Colors.deepPurple,
                                     ),
                                   ),
                                 ),

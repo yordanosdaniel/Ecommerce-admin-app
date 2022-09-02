@@ -80,13 +80,14 @@ class _Signup extends State<Signup> {
 
         final User? user = _auth.currentUser;
         final _uid = user!.uid;
-        FirebaseFirestore.instance.collection('admins').doc(_uid).set({
+        FirebaseFirestore.instance.collection('users').doc(_uid).set({
           'id': _uid,
           'name': _fullName,
           'email': _email,
           'phoneNumber': _phoneNumber,
           'imageUrl': _url,
           'joinedDate': formattedDate,
+          'role':'admins'
           // 'createdAt': TimeStamp.now()
         });
 

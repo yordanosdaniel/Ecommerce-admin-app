@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, use_build_context_synchronously, unused_element
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_project_admin/auth/signup_admin.dart';
 import 'package:demo_project_admin/global_method.dart';
 import 'package:demo_project_admin/screens/admin.dart';
@@ -29,9 +30,26 @@ class _Login extends State<Login> {
 
   String _email = '';
   String _password = '';
+  String role = '';
+  String _uid = '';
 
   bool _isVisible = false;
   bool _isLoading = false;
+
+  // authorizedAccess() async {
+  //   FirebaseFirestore.instance
+  //       .collection('user')
+  //       .where('uid', isEqualTo: _uid)
+  //       .get()
+  //       .then((doc) {
+  //     if (doc.docs[0].exists) {
+  //       if (doc.docs[0].get('role') == 'admin') {
+
+  //     } else {
+  //       print('not admin');
+  //     }
+  //   });
+  // }
 
   void _submitData() async {
     final _isValid = _formKey.currentState!.validate();
@@ -43,18 +61,31 @@ class _Login extends State<Login> {
       _formKey.currentState!.save();
 
       try {
-        await _auth.signInWithEmailAndPassword(
+        // authorizedAccess();
+        final newUser = await _auth.signInWithEmailAndPassword(
             email: _email.toLowerCase().trim(),
             password: _password.toLowerCase().trim());
-        print("logged in");
+        if (newUser != null) {
+          User? user = _auth.currentUser;
+          _uid = user!.uid;
+          final DocumentSnapshot result = await FirebaseFirestore.instance
+              .collection('users')
+              .doc(_uid)
+              .get();
 
-        Navigator.pop(context);
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: ((context) => Admin()),
-          ),
-        );
+          String role = result.get('role');
+          if (role == 'admins') {
+            Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Admin()),
+            );
+          }
+          else {
+          _globalMethods.showDialogues(context, 'It is not an admin account.');
+        }
+        } 
+        print("logged in");
       } catch (e) {
         _globalMethods.showDialogues(context, e.toString());
       } finally {

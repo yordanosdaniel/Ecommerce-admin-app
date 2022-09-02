@@ -1,11 +1,15 @@
 // ignore_for_file: deprecated_member_use, duplicate_ignore
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:demo_project_admin/auth/change_pasword_page.dart';
+import 'package:demo_project_admin/auth/login_admin.dart';
 import 'package:demo_project_admin/screens/add_packages.dart';
 import 'package:demo_project_admin/screens/add_product.dart';
 import 'package:demo_project_admin/screens/orders.dart';
 import 'package:demo_project_admin/screens/package_list.dart';
 import 'package:demo_project_admin/screens/product_list.dart';
+import 'package:demo_project_admin/screens/reported_orders.dart';
+import 'package:demo_project_admin/welcome_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -29,7 +33,7 @@ class _AdminState extends State<Admin> {
     _uid = user!.uid;
 
     final DocumentSnapshot userDocs =
-        await FirebaseFirestore.instance.collection("admins").doc(_uid).get();
+        await FirebaseFirestore.instance.collection("users").doc(_uid).get();
     setState(() {
       _email = userDocs.get('email');
       _name = userDocs.get('name');
@@ -54,6 +58,11 @@ class _AdminState extends State<Admin> {
           GestureDetector(
             onTap: () {
               _auth.signOut();
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Login()),
+              );
               print("signed out");
             },
             child: Container(
@@ -112,15 +121,38 @@ class _AdminState extends State<Admin> {
               height: 3,
               color: Colors.purple,
             ),
-            InkWell(
-              onTap: () async {
-                await _auth.signOut();
-              },
+            GestureDetector(
+              onTap: () async {},
               child: ListTile(
-                onTap: (() => _auth.signOut()),
+                onTap: (() async {
+                  await _auth.signOut();
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Login()),
+                  );
+                }),
                 title: const Text("Log out"),
                 leading: Icon(
                   Icons.logout,
+                  color: Colors.deepPurple[800],
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ChangePassword()));
+              },
+              child: ListTile(
+                title: const Text("Change Password"),
+                leading: Icon(
+                  Icons.person,
                   color: Colors.deepPurple[800],
                 ),
               ),
@@ -136,7 +168,27 @@ class _AdminState extends State<Admin> {
       children: <Widget>[
         const Divider(),
         ListTile(
-          leading: const Icon(Icons.shopping_cart_checkout_outlined),
+          leading: Stack(
+            children: const [
+              Positioned(
+                child: Icon(
+                  Icons.shopping_cart_checkout_outlined,
+                  color: Colors.red,
+                ),
+              ),
+              // Positioned(
+              //   top: 0,
+              //   right: 0,
+              //   child: Text(
+              //     "2",
+              //     style: TextStyle(
+              //         color: Colors.red,
+              //         fontWeight: FontWeight.bold,
+              //         fontSize: 18),
+              //   ),
+              // ),
+            ],
+          ),
           title: const Text("New Orders"),
           onTap: () {
             Navigator.push(context,
@@ -144,7 +196,27 @@ class _AdminState extends State<Admin> {
           },
         ),
         ListTile(
-          leading: const Icon(Icons.shopping_basket_outlined),
+          leading: const Icon(
+            Icons.replay,
+            color: Colors.purple,
+          ),
+          title: const Text("Replied Orders"),
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const ReportedOrders()));
+          },
+        ),
+        const Divider(
+          height: 2,
+          color: Colors.deepPurpleAccent,
+        ),
+        ListTile(
+          leading: const Icon(
+            Icons.shopping_basket_outlined,
+            color: Colors.orange,
+          ),
           title: const Text("Add new product packages"),
           onTap: () {
             Navigator.push(
@@ -155,7 +227,10 @@ class _AdminState extends State<Admin> {
         ),
         const Divider(),
         ListTile(
-          leading: const Icon(Icons.add),
+          leading: const Icon(
+            Icons.add,
+            color: Colors.teal,
+          ),
           title: const Text("Add new single product"),
           onTap: () {
             Navigator.push(
@@ -164,9 +239,15 @@ class _AdminState extends State<Admin> {
                     builder: (context) => const UploadProducts()));
           },
         ),
-        const Divider(),
+        const Divider(
+          height: 2,
+          color: Colors.deepPurpleAccent,
+        ),
         ListTile(
-          leading: const Icon(Icons.change_history),
+          leading: const Icon(
+            Icons.change_history,
+            color: Colors.brown,
+          ),
           title: const Text("Products list"),
           onTap: () {
             Navigator.push(context,
@@ -175,7 +256,10 @@ class _AdminState extends State<Admin> {
         ),
         const Divider(),
         ListTile(
-          leading: const Icon(Icons.list),
+          leading: const Icon(
+            Icons.list,
+            color: Colors.pinkAccent,
+          ),
           title: const Text("Package list"),
           onTap: () {
             Navigator.push(context,

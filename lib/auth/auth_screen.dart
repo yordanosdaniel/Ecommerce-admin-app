@@ -1,4 +1,5 @@
 import 'package:demo_project_admin/auth/login_admin.dart';
+import 'package:demo_project_admin/screens/admin.dart';
 import 'package:demo_project_admin/welcome_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ class AuthStateScreen extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.connectionState == ConnectionState.active) {
           if (snapshot.hasData) {
-            return const WelcomeScreen();
+            return Admin();
           } else {
             return Login();
           }

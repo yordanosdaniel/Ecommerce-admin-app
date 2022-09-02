@@ -5,40 +5,23 @@ import 'package:demo_project_admin/global_method.dart';
 import 'package:demo_project_admin/screens/confirm_shipment.dart';
 import 'package:flutter/material.dart';
 
-class OrderDetailScreen extends StatefulWidget {
+class ConfirmedDetails extends StatefulWidget {
   final String orderIds;
-  const OrderDetailScreen({Key? key, required this.orderIds}) : super(key: key);
+  const ConfirmedDetails({Key? key, required this.orderIds}) : super(key: key);
 
   @override
-  State<OrderDetailScreen> createState() => _OrderScreenState();
+  State<ConfirmedDetails> createState() => _OrderScreenState();
 }
 
-class _OrderScreenState extends State<OrderDetailScreen> {
+class _OrderScreenState extends State<ConfirmedDetails> {
   @override
   void initState() {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    deleteOrder();
-    super.dispose();
-  }
-
-  final double subtotal = 0.0;
-  final double deliveryFee = 0.0;
-  final double total = 0.0;
-
   bool _isOrder = false;
   bool _isConfirmed = false;
   GlobalMethods globalMethods = GlobalMethods();
-
-  deleteOrder() async {
-    await FirebaseFirestore.instance
-        .collection('orders')
-        .doc(widget.orderIds)
-        .delete();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +31,7 @@ class _OrderScreenState extends State<OrderDetailScreen> {
 
     Stream<DocumentSnapshot<Map<String, dynamic>>> courseDocStream =
         FirebaseFirestore.instance
-            .collection('orders')
+            .collection('reoprted-orders')
             .doc(widget.orderIds)
             .snapshots();
 
@@ -234,6 +217,42 @@ class _OrderScreenState extends State<OrderDetailScreen> {
                                       ),
                                     ),
                                     ListTile(
+                                      leading: Icon(
+                                        Icons.date_range,
+                                        color: Colors.deepPurple,
+                                      ),
+                                      title: const Text(
+                                        "Date Information",
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.deepPurple,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      subtitle: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "ordered Date: " +
+                                                courseDocument['orderedDate'],
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              color: Colors.deepPurple,
+                                            ),
+                                          ),
+                                          Text(
+                                            "Replied Date: " +
+                                                courseDocument['reportedDate'],
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              color: Colors.deepPurple,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    ListTile(
                                       leading: const Icon(
                                         Icons.person,
                                         color: Colors.deepPurple,
@@ -377,59 +396,6 @@ class _OrderScreenState extends State<OrderDetailScreen> {
                                     // SizedBox(
                                     //   height: 30,
                                     // ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                ConfirmShipment(
-                                                    orderId: courseDocument[
-                                                        'orderId']),
-                                          ),
-                                        );
-                                        setState(() {
-                                          _isConfirmed = true;
-                                        });
-                                      },
-                                      child: _isConfirmed
-                                          ? Container(
-                                              alignment: Alignment.center,
-                                              height: 45,
-                                              color: Colors.purple,
-                                              child: const Text(
-                                                'Confirm Shipment',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 25),
-                                              ),
-                                            )
-                                          //  Container(
-                                          //     alignment: Alignment.center,
-                                          //     height: 45,
-                                          //     color: Colors.purple[200],
-                                          //     child: const Text(
-                                          //       'Confirmed',
-                                          //       style: TextStyle(
-                                          //           color: Colors.white,
-                                          //           fontWeight: FontWeight.bold,
-                                          //           fontSize: 25),
-                                          //     ),
-                                          //   )
-                                          : Container(
-                                              alignment: Alignment.center,
-                                              height: 45,
-                                              color: Colors.purple,
-                                              child: const Text(
-                                                'Confirm Shipment',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 25),
-                                              ),
-                                            ),
-                                    ),
                                   ],
                                 ),
                               ),

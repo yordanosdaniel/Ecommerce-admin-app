@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_project_admin/global_method.dart';
+import 'package:demo_project_admin/screens/orders_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sms/flutter_sms.dart';
 
@@ -20,10 +21,59 @@ class _ConfirmShipmentState extends State<ConfirmShipment> {
   final _formKey = GlobalKey<FormState>();
 
   @override
-  void dispose() {
+  void dispose() async {
     numberOfDaysTakeToDeliverFoucusNode.dispose();
 
     super.dispose();
+  }
+
+  addToReported(
+      String orderIds,
+      String name,
+      String phoneNumber,
+      String email,
+      String city,
+      String subCity,
+      String street,
+      double total,
+      double subtotal,
+      double deliveryFee,
+      var products,
+      String orderedDate) async {
+    var date = DateTime.now().toString();
+    var parsedDate = DateTime.parse(date);
+    var formattedDate =
+        '${parsedDate.day}/${parsedDate.month}/${parsedDate.year}';
+    print("about to add");
+    try {
+      await FirebaseFirestore.instance
+          .collection('reoprted-orders')
+          .doc(widget.orderId)
+          .set({
+        "customer information": {
+          // 'userId': _uid,
+          'name': name,
+          'email': email,
+          'phoneNumber': phoneNumber,
+        },
+        "delivery information": {
+          'city': city,
+          'subCity': subCity,
+          'street': street,
+        },
+        "ordered products": products,
+        "TotalPricewithDelivery": total,
+        "deliveryFee": deliveryFee,
+        "subtotal": subtotal,
+        // "orderData": formattedDate,
+        "orderId": orderIds,
+        'name': name,
+        'orderedDate': orderedDate,
+        'reportedDate': formattedDate
+      });
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   void sendMessage(_phoneNumber) async {
@@ -65,32 +115,6 @@ class _ConfirmShipmentState extends State<ConfirmShipment> {
               const SizedBox(
                 height: 20,
               ),
-              // Padding(
-              //   padding: const EdgeInsets.all(10.0),
-              //   child: TextFormField(
-              //     initialValue: '3',
-              //     onSaved: (value) {
-              //       numberOfDaysTakeToDeliver = value!;
-              //     },
-              //     textInputAction: TextInputAction.next,
-              //     keyboardType: TextInputType.number,
-              //     onEditingComplete: () => FocusScope.of(context)
-              //         .requestFocus(numberOfDaysTakeToDeliverFoucusNode),
-              //     key: const ValueKey('days'),
-              //     validator: (value) {
-              //       if (value!.isEmpty) {
-              //         return 'Please enter how many days does it take to deliver?';
-              //       }
-              //       return null;
-              //     },
-              //     decoration: InputDecoration(
-              //       labelText: 'How many days does it take to deliver?',
-              //       border: OutlineInputBorder(
-              //         borderRadius: BorderRadius.circular(0),
-              //       ),
-              //     ),
-              //   ),
-              // ),
               const SizedBox(
                 height: 15,
               ),
@@ -100,8 +124,10 @@ class _ConfirmShipmentState extends State<ConfirmShipment> {
                 builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
                   if (snapshot.connectionState == ConnectionState.active) {
                     var document = snapshot.data!;
-
+                    var sections = document['ordered products'];
+                    var deliveryinfo = document['delivery information'];
                     var customerInfo = document['customer information'];
+
                     var name = customerInfo['name'];
                     return Column(
                       children: [
@@ -132,9 +158,24 @@ class _ConfirmShipmentState extends State<ConfirmShipment> {
                         MaterialButton(
                           color: Colors.deepPurple[800],
                           onPressed: () async {
+                            addToReported(
+                                document['orderId'],
+                                customerInfo['name'],
+                                customerInfo['phoneNumber'].toString(),
+                                customerInfo['email'],
+                                deliveryinfo['city'],
+                                deliveryinfo['subCity'],
+                                deliveryinfo['street'],
+                                document['subtotal'],
+                                document['TotalPricewithDelivery'],
+                                document['TotalPricewithDelivery'],
+                                sections,
+                                document['orderData'].toString());
                             var recipients = customerInfo['phoneNumber'];
 
                             sendMessage(recipients);
+                            Navigator.pop(context);
+                            Navigator.pop(context);
                           },
                           child: const Padding(
                             padding: EdgeInsets.all(10.0),
