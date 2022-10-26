@@ -13,7 +13,7 @@ class PackageList extends StatefulWidget {
 class _ProductState extends State<PackageList> {
   get width => null;
 
-  Future<void> showDialogues(BuildContext context, String id) async {
+  Future<void> delete(BuildContext context, String id) async {
     return showDialog(
         context: context,
         builder: (context) {
@@ -29,13 +29,11 @@ class _ProductState extends State<PackageList> {
                   child: const Text("No")),
               TextButton(
                 onPressed: () async {
-                  ;
+                  Navigator.pop(context);
                   await FirebaseFirestore.instance
                       .collection("packages")
                       .doc(id)
                       .delete();
-
-                  Navigator.pop(context);
                 },
                 child: const Text("Yes"),
               ),
@@ -97,122 +95,110 @@ class _ProductState extends State<PackageList> {
                     child: Column(
                       children: [
                         Container(
-                          height: 350,
-                          child: Stack(children: [
-                            Positioned(
-                                top: 35,
-                                left: 20,
-                                child: Material(
-                                  child: Container(
-                                    height: 400,
-                                    width: width * 0.9,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius:
-                                            BorderRadius.circular(0.0),
-                                        boxShadow: [
-                                          BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(0.3),
-                                              offset: new Offset(-10.0, 10.0),
-                                              blurRadius: 20.0,
-                                              spreadRadius: 4.0),
-                                        ]),
-                                  ),
-                                )),
-                            Positioned(
-                                top: 80,
-                                left: 30,
-                                child: Column(
-                                  children: [
-                                    GestureDetector(
-                                        onTap: () {
-                                          showDialogues(context,
-                                              snapshot.data!.docs[index]['id']);
-                                        },
-                                        child: Container(
-                                          child: Row(
-                                            children: const [
-                                              Icon(
-                                                Icons.delete,
-                                                color: Colors.red,
-                                              ),
-                                              Text(
-                                                "DELETE",
-                                                style: TextStyle(
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.red,
-                                                ),
-                                              ),
-                                            ],
+                          margin: EdgeInsets.symmetric(vertical: 25),
+                          child: Column(children: [
+                            Card(
+                              elevation: 10,
+                              shadowColor: Colors.grey.withOpacity(0.5),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Row(
+                                children: [
+                                  Column(
+                                    children: [
+                                      Container(
+                                        height: 250,
+                                        width: 160,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            image: NetworkImage(snapshot
+                                                .data!.docs[index]['image']),
                                           ),
-                                        )),
-                                    Container(
-                                      height: 250,
-                                      width: 160,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        image: DecorationImage(
-                                          fit: BoxFit.fill,
-                                          image: NetworkImage(snapshot
-                                              .data!.docs[index]['image']),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                )),
-                            Positioned(
-                                top: 60,
-                                right: 15,
-                                left: 200,
-                                child: Container(
-                                  height: 350,
-                                  width: 180,
-                                  child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Title: ${snapshot.data!.docs[index]['title']}",
-                                          style: const TextStyle(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.purple,
+                                      GestureDetector(
+                                          onTap: () {
+                                            delete(
+                                                context,
+                                                snapshot.data!.docs[index]
+                                                    ['id']);
+                                          },
+                                          child: Container(
+                                            child: Row(
+                                              children: const [
+                                                Icon(
+                                                  Icons.delete,
+                                                  color: Colors.red,
+                                                ),
+                                                Text(
+                                                  "DELETE",
+                                                  style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.red,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          )),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Container(
+                                    padding:
+                                        EdgeInsets.only(top: 15, bottom: 15),
+                                    height: 320,
+                                    width: 180,
+                                    child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Title: ${snapshot.data!.docs[index]['title']}",
+                                            style: const TextStyle(
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.purple,
+                                            ),
                                           ),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Text(
-                                          "Price : ${snapshot.data!.docs[index]['price']}",
-                                          style: const TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black45,
+                                          Text(
+                                            "Price : ${snapshot.data!.docs[index]['price']}",
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black45,
+                                            ),
                                           ),
-                                        ),
-                                        const Divider(
-                                          color: Colors.black,
-                                        ),
-                                        const Text(
-                                          "Description",
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
+                                          const Divider(
                                             color: Colors.black,
                                           ),
-                                        ),
-                                        Text(
-                                          snapshot.data!.docs[index]
-                                              ['description'],
-                                          style: const TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.black,
+                                          const Text(
+                                            "Description",
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black,
+                                            ),
                                           ),
-                                        )
-                                      ]),
-                                )),
+                                          Text(
+                                            snapshot.data!.docs[index]
+                                                ['description'],
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.black,
+                                            ),
+                                          )
+                                        ]),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ]),
                         ),
                         //

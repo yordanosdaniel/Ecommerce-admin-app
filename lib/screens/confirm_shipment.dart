@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_project_admin/global_method.dart';
+import 'package:demo_project_admin/screens/orders.dart';
 import 'package:demo_project_admin/screens/orders_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sms/flutter_sms.dart';
@@ -25,6 +26,10 @@ class _ConfirmShipmentState extends State<ConfirmShipment> {
     numberOfDaysTakeToDeliverFoucusNode.dispose();
 
     super.dispose();
+  }
+
+  deleteOrder(orderId) async {
+    await FirebaseFirestore.instance.collection('orders').doc(orderId).delete();
   }
 
   addToReported(
@@ -71,6 +76,13 @@ class _ConfirmShipmentState extends State<ConfirmShipment> {
         'orderedDate': orderedDate,
         'reportedDate': formattedDate
       });
+      deleteOrder(widget.orderId);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => OrderScreen(),
+        ),
+      );
     } catch (e) {
       print(e.toString());
     }

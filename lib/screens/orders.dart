@@ -99,6 +99,7 @@ class _OrderScreenState extends State<OrderScreen> {
                                               OrderDetailScreen(
                                                 orderIds: doc['orderId'],
                                               ))),
+                                  leading: Icon(Icons.person),
                                   title: Text(
                                     doc['name'],
                                   ),

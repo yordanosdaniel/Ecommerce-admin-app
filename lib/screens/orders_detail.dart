@@ -21,7 +21,6 @@ class _OrderScreenState extends State<OrderDetailScreen> {
 
   @override
   void dispose() {
-    deleteOrder();
     super.dispose();
   }
 
@@ -32,13 +31,6 @@ class _OrderScreenState extends State<OrderDetailScreen> {
   bool _isOrder = false;
   bool _isConfirmed = false;
   GlobalMethods globalMethods = GlobalMethods();
-
-  deleteOrder() async {
-    await FirebaseFirestore.instance
-        .collection('orders')
-        .doc(widget.orderIds)
-        .delete();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,8 +43,13 @@ class _OrderScreenState extends State<OrderDetailScreen> {
             .collection('orders')
             .doc(widget.orderIds)
             .snapshots();
+    setState(() {
+      if (courseDocStream.length != 0) {
+        _isOrder = true;
+      }
+    });
 
-    return _isOrder
+    return !_isOrder
         ? Scaffold(
             body: SingleChildScrollView(
             child: Column(

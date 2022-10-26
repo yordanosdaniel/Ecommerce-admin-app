@@ -115,6 +115,7 @@ class _UploadProductsState extends State<UploadProducts> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.deepPurple[50],
       appBar: AppBar(
         title: const Text("Add New Products"),
         elevation: 0,
@@ -158,6 +159,9 @@ class _UploadProductsState extends State<UploadProducts> {
                                 height: 200,
                                 width: 200,
                                 decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: AssetImage("assets/mocha.jpg"),
+                                      fit: BoxFit.cover),
                                   border:
                                       Border.all(width: 2, color: Colors.grey),
                                 ),
@@ -202,97 +206,84 @@ class _UploadProductsState extends State<UploadProducts> {
                   ),
 
                   const SizedBox(height: 10),
-                  Row(
+                  Column(
                     children: [
-                      Flexible(
-                        flex: 3,
-                        child: TextFormField(
-                          key: const ValueKey('title'),
-                          validator: (val) {
-                            if (val!.isEmpty) {
-                              return 'Please enter a title';
-                            }
-                            return null;
-                          },
-                          keyboardType: TextInputType.emailAddress,
-                          decoration: const InputDecoration(labelText: 'Title'),
-                          onSaved: (val) {
-                            _productTitle = val.toString();
-                          },
+                      TextFormField(
+                        key: const ValueKey('title'),
+                        validator: (val) {
+                          if (val!.isEmpty) {
+                            return 'Please enter a title';
+                          }
+                          return null;
+                        },
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                          fillColor: Colors.white,
+                          filled: true,
+                          labelText: 'Title',
+                          labelStyle:
+                              TextStyle(color: Colors.black, fontSize: 18),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
                         ),
+                        onSaved: (val) {
+                          _productTitle = val.toString();
+                        },
                       ),
-                      const SizedBox(width: 10),
-                      Flexible(
-                        flex: 1,
-                        child: TextFormField(
-                          key: const ValueKey('price'),
-                          validator: (val) {
-                            if (val!.isEmpty) {
-                              return 'Price is missing';
-                            }
-                            return null;
-                          },
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly,
-                          ],
-                          decoration:
-                              const InputDecoration(labelText: 'Price Birr'),
-                          onSaved: (val) {
-                            _productPrice = val.toString();
-                          },
+                      const SizedBox(height: 10),
+                      TextFormField(
+                        key: const ValueKey('price'),
+                        validator: (val) {
+                          if (val!.isEmpty) {
+                            return 'Price is missing';
+                          }
+                          return null;
+                        },
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
+                        decoration: InputDecoration(
+                          fillColor: Colors.white,
+                          filled: true,
+                          labelText: 'Price Birr',
+                          labelStyle:
+                              TextStyle(color: Colors.black, fontSize: 18),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
                         ),
+                        onSaved: (val) {
+                          _productPrice = val.toString();
+                        },
                       ),
                     ],
                   ),
-                  const SizedBox(width: 10),
 
-                  const SizedBox(height: 15),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //   crossAxisAlignment: CrossAxisAlignment.end,
-                  //   children: [
-                  //     Expanded(
-                  //       //flex: 2,
-                  //       child: Padding(
-                  //         padding: const EdgeInsets.only(right: 9),
-                  //         child: TextFormField(
-                  //           keyboardType: TextInputType.number,
-                  //           key: const ValueKey('Quantity'),
-                  //           validator: (value) {
-                  //             if (value!.isEmpty) {
-                  //               return 'Quantity is missed';
-                  //             }
-                  //             return null;
-                  //           },
-                  //           decoration: const InputDecoration(
-                  //             labelText: 'Quantity',
-                  //           ),
-                  //           onSaved: (value) {
-                  //             _productQuantity = value.toString();
-                  //           },
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
                   const SizedBox(height: 15),
                   TextFormField(
                       key: const ValueKey('Description'),
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return 'product description is required';
+                          return 'package description is required';
                         }
                         return null;
                       },
                       //controller: this._controller,
                       maxLines: 10,
                       textCapitalization: TextCapitalization.sentences,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        fillColor: Colors.white,
+                        filled: true,
                         //  counterText: charLength.toString(),
                         labelText: 'Description',
-                        hintText: 'Product description',
-                        border: OutlineInputBorder(),
+                        labelStyle:
+                            TextStyle(color: Colors.black, fontSize: 18),
+                        hintText: 'Package description',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
                       ),
                       onSaved: (value) {
                         _productDescription = value.toString();
