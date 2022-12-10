@@ -5,7 +5,6 @@ import 'package:demo_project_admin/global_method.dart';
 import 'package:demo_project_admin/screens/orders_detail.dart';
 import 'package:demo_project_admin/screens/reported_orders.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class OrderScreen extends StatefulWidget {
   const OrderScreen({Key? key}) : super(key: key);
@@ -79,7 +78,7 @@ class _OrderScreenState extends State<OrderScreen> {
             body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                 // <2> Pass `Stream<QuerySnapshot>` to stream
                 stream: FirebaseFirestore.instance
-                    .collection('orders')
+                    .collection('processing orders')
                     .orderBy('orderData', descending: true)
                     .snapshots(),
                 builder: (context, snapshot) {

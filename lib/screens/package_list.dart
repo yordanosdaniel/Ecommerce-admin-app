@@ -161,6 +161,7 @@ class _ProductState extends State<PackageList> {
                                         children: [
                                           Text(
                                             "Title: ${snapshot.data!.docs[index]['title']}",
+                                            overflow: TextOverflow.ellipsis,
                                             style: const TextStyle(
                                               fontSize: 17,
                                               fontWeight: FontWeight.bold,

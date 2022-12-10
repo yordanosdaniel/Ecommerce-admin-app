@@ -1,4 +1,4 @@
-// ignore_for_file: unused_field, use_build_context_synchronously
+// ignore_for_file: unused_field, use_build_context_synchronously, prefer_final_fields
 
 import 'dart:io';
 
@@ -8,9 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:toast/toast.dart';
 import 'package:uuid/uuid.dart';
 
 class UploadPackages extends StatefulWidget {
@@ -51,7 +49,7 @@ class _UploadProductsState extends State<UploadPackages> {
         final ref = FirebaseStorage.instance
             .ref()
             .child('product')
-            .child(_packageTitle + '.jpg');
+            .child('$_packageTitle.jpg');
         await ref.putFile(_image!);
         _url = await ref.getDownloadURL();
 
@@ -159,7 +157,7 @@ class _UploadProductsState extends State<UploadPackages> {
                                 height: 200,
                                 width: 200,
                                 decoration: BoxDecoration(
-                                  image: DecorationImage(
+                                  image: const DecorationImage(
                                       image: AssetImage("assets/mocha.jpg"),
                                       fit: BoxFit.cover),
                                   border:
@@ -222,7 +220,7 @@ class _UploadProductsState extends State<UploadPackages> {
                           filled: true,
                           labelText: 'Title',
                           labelStyle:
-                              TextStyle(color: Colors.black, fontSize: 18),
+                              const TextStyle(color: Colors.black, fontSize: 18),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),
@@ -249,7 +247,7 @@ class _UploadProductsState extends State<UploadPackages> {
                           filled: true,
                           labelText: 'Price Birr',
                           labelStyle:
-                              TextStyle(color: Colors.black, fontSize: 18),
+                              const TextStyle(color: Colors.black, fontSize: 18),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),
@@ -279,7 +277,7 @@ class _UploadProductsState extends State<UploadPackages> {
                         //  counterText: charLength.toString(),
                         labelText: 'Description',
                         labelStyle:
-                            TextStyle(color: Colors.black, fontSize: 18),
+                            const TextStyle(color: Colors.black, fontSize: 18),
                         hintText: 'Package description',
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),

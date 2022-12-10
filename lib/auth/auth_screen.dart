@@ -16,9 +16,9 @@ class AuthStateScreen extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.connectionState == ConnectionState.active) {
           if (snapshot.hasData) {
-            return WelcomeScreen();
+            return const Admin();
           } else {
-            return Login();
+            return const Login();
           }
         } else if (snapshot.hasError) {
           return const Text('Error Occured');

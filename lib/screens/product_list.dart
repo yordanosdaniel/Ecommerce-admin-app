@@ -152,7 +152,7 @@ class _ProductState extends State<ProductList> {
                                   Container(
                                     padding:
                                         EdgeInsets.only(top: 15, bottom: 15),
-                                    height: 320,
+                                    height: 340,
                                     width: 180,
                                     child: Column(
                                         crossAxisAlignment:
@@ -188,8 +188,9 @@ class _ProductState extends State<ProductList> {
                                           Text(
                                             snapshot.data!.docs[index]
                                                 ['description'],
+                                            // overflow: TextOverflow.ellipsis,
                                             style: const TextStyle(
-                                              fontSize: 16,
+                                              fontSize: 15,
                                               color: Colors.black,
                                             ),
                                           )

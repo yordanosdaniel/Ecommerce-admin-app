@@ -29,7 +29,10 @@ class _ConfirmShipmentState extends State<ConfirmShipment> {
   }
 
   deleteOrder(orderId) async {
-    await FirebaseFirestore.instance.collection('orders').doc(orderId).delete();
+    await FirebaseFirestore.instance
+        .collection('processing orders')
+        .doc(orderId)
+        .delete();
   }
 
   addToReported(
@@ -52,7 +55,7 @@ class _ConfirmShipmentState extends State<ConfirmShipment> {
     print("about to add");
     try {
       await FirebaseFirestore.instance
-          .collection('reoprted-orders')
+          .collection('completed orders')
           .doc(widget.orderId)
           .set({
         "customer information": {
@@ -74,7 +77,8 @@ class _ConfirmShipmentState extends State<ConfirmShipment> {
         "orderId": orderIds,
         'name': name,
         'orderedDate': orderedDate,
-        'reportedDate': formattedDate
+        'reportedDate': formattedDate,
+        'status': "Completed",
       });
       deleteOrder(widget.orderId);
       Navigator.push(
@@ -102,7 +106,7 @@ class _ConfirmShipmentState extends State<ConfirmShipment> {
   Widget build(BuildContext context) {
     Stream<DocumentSnapshot<Map<String, dynamic>>> courseDocStream =
         FirebaseFirestore.instance
-            .collection('orders')
+            .collection('processing orders')
             .doc(widget.orderId)
             .snapshots();
 

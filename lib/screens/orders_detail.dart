@@ -40,7 +40,7 @@ class _OrderScreenState extends State<OrderDetailScreen> {
 
     Stream<DocumentSnapshot<Map<String, dynamic>>> courseDocStream =
         FirebaseFirestore.instance
-            .collection('orders')
+            .collection('processing orders')
             .doc(widget.orderIds)
             .snapshots();
     setState(() {

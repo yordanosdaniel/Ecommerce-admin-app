@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, use_build_context_synchronously, unused_element
+// ignore_for_file: prefer_const_literals_to_create_immutables, use_build_context_synchronously, unused_element, prefer_final_fields, no_leading_underscores_for_local_identifiers, unnecessary_null_comparison, avoid_print, non_constant_identifier_names
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_project_admin/auth/signup_admin.dart';
@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 class Login extends StatefulWidget {
   static const routeName = '/login';
 
-  Login({Key? key}) : super(key: key);
+  const Login({Key? key}) : super(key: key);
   @override
   State<StatefulWidget> createState() {
     return _Login();
@@ -78,20 +78,24 @@ class _Login extends State<Login> {
             Navigator.pop(context);
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => Admin()),
+              MaterialPageRoute(builder: (context) => const Admin()),
             );
+          } else {
+            _globalMethods.showDialogues(
+                context, 'It is not an admin account.');
           }
-          else {
-          _globalMethods.showDialogues(context, 'It is not an admin account.');
         }
-        } 
         print("logged in");
       } catch (e) {
-        _globalMethods.showDialogues(context, e.toString());
+        if (mounted) {
+          _globalMethods.showDialogues(context, e.toString());
+        }
       } finally {
-        setState(() {
-          _isLoading = false;
-        });
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+        }
       }
     }
   }
@@ -151,7 +155,7 @@ class _Login extends State<Login> {
                 ),
                 Form(
                   key: _formKey,
-                  child: Container(
+                  child: SizedBox(
                     height: MediaQuery.of(context).size.height * 0.40,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -270,7 +274,7 @@ class _Login extends State<Login> {
   Widget loginButton(BuildContext _context) {
     return _isLoading
         ? const Center(
-            child: const CircularProgressIndicator(),
+            child: CircularProgressIndicator(),
           )
         : Container(
             margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
@@ -316,7 +320,7 @@ class _Login extends State<Login> {
           ),
           onTap: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => Signup()));
+                context, MaterialPageRoute(builder: (context) => const Signup()));
           },
         ),
       ],

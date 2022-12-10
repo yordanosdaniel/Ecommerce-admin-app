@@ -2,7 +2,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_project_admin/global_method.dart';
-import 'package:demo_project_admin/screens/confirm_shipment.dart';
 import 'package:flutter/material.dart';
 
 class ConfirmedDetails extends StatefulWidget {
@@ -31,7 +30,7 @@ class _OrderScreenState extends State<ConfirmedDetails> {
 
     Stream<DocumentSnapshot<Map<String, dynamic>>> courseDocStream =
         FirebaseFirestore.instance
-            .collection('reoprted-orders')
+            .collection('completed orders')
             .doc(widget.orderIds)
             .snapshots();
 
@@ -205,199 +204,195 @@ class _OrderScreenState extends State<ConfirmedDetails> {
                             height: 270,
                             width: double.infinity,
                             child: SingleChildScrollView(
-                              child: Container(
-                                child: Column(
-                                  children: [
-                                    const Text(
-                                      "Delivery Informartion",
+                              child: Column(
+                                children: [
+                                  const Text(
+                                    "Delivery Informartion",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.deepPurple,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  ListTile(
+                                    leading: const Icon(
+                                      Icons.date_range,
+                                      color: Colors.deepPurple,
+                                    ),
+                                    title: const Text(
+                                      "Date Information",
                                       style: TextStyle(
-                                        fontSize: 20,
+                                        fontSize: 18,
                                         color: Colors.deepPurple,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    ListTile(
-                                      leading: Icon(
-                                        Icons.date_range,
-                                        color: Colors.deepPurple,
-                                      ),
-                                      title: const Text(
-                                        "Date Information",
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          color: Colors.deepPurple,
-                                          fontWeight: FontWeight.bold,
+                                    subtitle: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "ordered Date: " +
+                                              courseDocument['ordeedDate'],
+                                          style: const TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.deepPurple,
+                                          ),
                                         ),
-                                      ),
-                                      subtitle: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "ordered Date: " +
-                                                courseDocument['orderedDate'],
-                                            style: TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.deepPurple,
-                                            ),
+                                        Text(
+                                          "Replied Date: " +
+                                              courseDocument['reportedDate'],
+                                          style: const TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.deepPurple,
                                           ),
-                                          Text(
-                                            "Replied Date: " +
-                                                courseDocument['reportedDate'],
-                                            style: TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.deepPurple,
-                                            ),
-                                          ),
-                                        ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  ListTile(
+                                    leading: const Icon(
+                                      Icons.person,
+                                      color: Colors.deepPurple,
+                                    ),
+                                    title: const Text(
+                                      "Customer Information",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.deepPurple,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    ListTile(
-                                      leading: const Icon(
-                                        Icons.person,
-                                        color: Colors.deepPurple,
-                                      ),
-                                      title: const Text(
-                                        "Customer Information",
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          color: Colors.deepPurple,
-                                          fontWeight: FontWeight.bold,
+                                    subtitle: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Full Name: " + customerInfo['name'],
+                                          style: const TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.deepPurple,
+                                            fontWeight: FontWeight.normal,
+                                          ),
                                         ),
-                                      ),
-                                      subtitle: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "Full Name: " +
-                                                customerInfo['name'],
-                                            style: const TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.deepPurple,
-                                              fontWeight: FontWeight.normal,
-                                            ),
+                                        Text(
+                                          "Email: " + customerInfo['email'],
+                                          style: const TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.deepPurple,
+                                            fontWeight: FontWeight.normal,
                                           ),
-                                          Text(
-                                            "Email: " + customerInfo['email'],
-                                            style: const TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.deepPurple,
-                                              fontWeight: FontWeight.normal,
-                                            ),
+                                        ),
+                                        Text(
+                                          "Phone Number: ${customerInfo['phoneNumber']}",
+                                          style: const TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.deepPurple,
+                                            fontWeight: FontWeight.normal,
                                           ),
-                                          Text(
-                                            "Phone Number: ${customerInfo['phoneNumber']}",
-                                            style: const TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.deepPurple,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
-                                        ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  ListTile(
+                                    leading: const Icon(
+                                      Icons.calculate_outlined,
+                                      color: Colors.deepPurple,
+                                    ),
+                                    title: const Text(
+                                      "Price Detail",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.deepPurple,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    ListTile(
-                                      leading: const Icon(
-                                        Icons.calculate_outlined,
-                                        color: Colors.deepPurple,
-                                      ),
-                                      title: const Text(
-                                        "Price Detail",
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          color: Colors.deepPurple,
-                                          fontWeight: FontWeight.bold,
+                                    subtitle: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Subtotal: " +
+                                              courseDocument['subtotal']
+                                                  .toString(),
+                                          style: const TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.deepPurple,
+                                            fontWeight: FontWeight.normal,
+                                          ),
                                         ),
-                                      ),
-                                      subtitle: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "Subtotal: " +
-                                                courseDocument['subtotal']
-                                                    .toString(),
-                                            style: const TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.deepPurple,
-                                              fontWeight: FontWeight.normal,
-                                            ),
+                                        Text(
+                                          "Delivery Fee: " +
+                                              courseDocument['deliveryFee']
+                                                  .toString(),
+                                          style: const TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.deepPurple,
+                                            fontWeight: FontWeight.normal,
                                           ),
-                                          Text(
-                                            "Delivery Fee: " +
-                                                courseDocument['deliveryFee']
-                                                    .toString(),
-                                            style: const TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.deepPurple,
-                                              fontWeight: FontWeight.normal,
-                                            ),
+                                        ),
+                                        Text(
+                                          "Total: " +
+                                              courseDocument[
+                                                      'TotalPricewithDelivery']
+                                                  .toString(),
+                                          style: const TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.deepPurple,
+                                            fontWeight: FontWeight.normal,
                                           ),
-                                          Text(
-                                            "Total: " +
-                                                courseDocument[
-                                                        'TotalPricewithDelivery']
-                                                    .toString(),
-                                            style: const TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.deepPurple,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
-                                        ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  ListTile(
+                                    leading: const Icon(
+                                      Icons.location_on,
+                                      color: Colors.deepPurple,
+                                    ),
+                                    title: const Text(
+                                      "Location",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.deepPurple,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    ListTile(
-                                      leading: const Icon(
-                                        Icons.location_on,
-                                        color: Colors.deepPurple,
-                                      ),
-                                      title: const Text(
-                                        "Location",
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          color: Colors.deepPurple,
-                                          fontWeight: FontWeight.bold,
+                                    subtitle: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "City: " + deliveryinfo['city'],
+                                          style: const TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.deepPurple,
+                                            fontWeight: FontWeight.normal,
+                                          ),
                                         ),
-                                      ),
-                                      subtitle: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "City: " + deliveryinfo['city'],
-                                            style: const TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.deepPurple,
-                                              fontWeight: FontWeight.normal,
-                                            ),
+                                        Text(
+                                          "Subcity: " + deliveryinfo['subCity'],
+                                          style: const TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.deepPurple,
+                                            fontWeight: FontWeight.normal,
                                           ),
-                                          Text(
-                                            "Subcity: " +
-                                                deliveryinfo['subCity'],
-                                            style: const TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.deepPurple,
-                                              fontWeight: FontWeight.normal,
-                                            ),
+                                        ),
+                                        Text(
+                                          "street: " + deliveryinfo['street'],
+                                          style: const TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.deepPurple,
+                                            fontWeight: FontWeight.normal,
                                           ),
-                                          Text(
-                                            "street: " + deliveryinfo['street'],
-                                            style: const TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.deepPurple,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
-                                    // SizedBox(
-                                    //   height: 30,
-                                    // ),
-                                  ],
-                                ),
+                                  ),
+                                  // SizedBox(
+                                  //   height: 30,
+                                  // ),
+                                ],
                               ),
                             ),
                           )

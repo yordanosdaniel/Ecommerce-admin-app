@@ -3,9 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_project_admin/global_method.dart';
 import 'package:demo_project_admin/screens/confirmed_details.dart';
-import 'package:demo_project_admin/screens/orders_detail.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class ReportedOrders extends StatefulWidget {
   const ReportedOrders({
@@ -65,7 +63,7 @@ class _OrderScreenState extends State<ReportedOrders> {
             body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                 // <2> Pass `Stream<QuerySnapshot>` to stream
                 stream: FirebaseFirestore.instance
-                    .collection('reoprted-orders')
+                    .collection('completed orders')
                     .orderBy('reportedDate', descending: true)
                     .snapshots(),
                 builder: (context, snapshot) {

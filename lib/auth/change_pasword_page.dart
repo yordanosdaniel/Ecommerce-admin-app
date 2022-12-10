@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously, avoid_print, unused_field, deprecated_member_use
 
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
@@ -19,6 +19,7 @@ class _ChangePasswordState extends State<ChangePassword> {
   final currentUser = FirebaseAuth.instance.currentUser;
   late File image;
   late String imgUrl;
+  @override
   void dispose() {
     newPasswordContrller.dispose();
     super.dispose();
@@ -35,7 +36,9 @@ class _ChangePasswordState extends State<ChangePassword> {
         backgroundColor: Colors.black26,
         content: Text("your password is changed successfully! "),
       ));
-    } catch (error) {}
+    } catch (error) {
+      print(error);
+    }
   }
 
   late PickedFile _imageFile;
@@ -51,7 +54,7 @@ class _ChangePasswordState extends State<ChangePassword> {
             children: [
               // imageProfile(),
               // SizedBox(height: 10,),
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height * 0.70,
                 child: Center(

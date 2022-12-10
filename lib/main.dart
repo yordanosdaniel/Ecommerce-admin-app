@@ -1,7 +1,4 @@
 import 'package:demo_project_admin/auth/auth_screen.dart';
-import 'package:demo_project_admin/screens/admin.dart';
-import 'package:demo_project_admin/screens/confirm_shipment.dart';
-import 'package:demo_project_admin/welcome_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
       ),
-      home: AuthStateScreen(),
+      home: const AuthStateScreen(),
     );
   }
 }

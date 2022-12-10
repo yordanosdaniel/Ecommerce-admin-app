@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use, duplicate_ignore
+// ignore_for_file: deprecated_member_use, duplicate_ignore, prefer_final_fields, avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_project_admin/auth/change_pasword_page.dart';
@@ -9,12 +9,14 @@ import 'package:demo_project_admin/screens/orders.dart';
 import 'package:demo_project_admin/screens/package_list.dart';
 import 'package:demo_project_admin/screens/product_list.dart';
 import 'package:demo_project_admin/screens/reported_orders.dart';
-import 'package:demo_project_admin/welcome_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Admin extends StatefulWidget {
+  const Admin({Key? key}) : super(key: key);
+
   @override
+  // ignore: library_private_types_in_public_api
   _AdminState createState() => _AdminState();
 }
 
@@ -61,7 +63,7 @@ class _AdminState extends State<Admin> {
               Navigator.pop(context);
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Login()),
+                MaterialPageRoute(builder: (context) => const Login()),
               );
               print("signed out");
             },
@@ -78,7 +80,7 @@ class _AdminState extends State<Admin> {
         backgroundColor: Colors.deepPurple[100],
         child: ListView(
           children: [
-            Container(
+            SizedBox(
               height: 220,
               child: DrawerHeader(
                 child: Column(
@@ -131,7 +133,7 @@ class _AdminState extends State<Admin> {
 
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Login()),
+                    MaterialPageRoute(builder: (context) => const Login()),
                   );
                 }),
                 title: const Text("Log out"),
